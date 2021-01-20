@@ -1,0 +1,14 @@
+
+FROM ubuntu
+
+# default password
+ENV PASSW=1234
+
+RUN apt-get update
+
+# Install vnc, xvfb in order to create a 'fake' display and firefox
+RUN apt-get install -y x11vnc xubuntu-desktop && \
+    mkdir ~/.vnc && \
+    apt-get -s clean
+
+CMD "x11vnc -storepasswd 1234 ~/.vnc/passwd && x11vnc -forever -usepw -create"

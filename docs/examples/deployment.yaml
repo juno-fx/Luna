@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: workstation
+
+spec:
+  selector:
+    matchLabels:
+      app: workstation
+
+  template:
+    metadata:
+      labels:
+        app: workstation
+
+    spec:
+      containers:
+        - name: workstation
+          imagePullPolicy: IfNotPresent
+          image: nginx
+          env:
+            - name: LUNA
+              value: "BUDDY" # <- set the hostname of the container for luna
+
+        - name: luna
+          imagePullPolicy: IfNotPresent
+          image: hatfieldfx/luna
+          env:
+            - name: BUDDY
+              value: "BUDDY" # <- let luna know where to look for the workstation
+            - name: REG
+              value: your/repository
+            - name: USR
+              valueFrom:
+                secretKeyRef:
+                  key: usr
+                  name: luna
+            - name: PAS
+              valueFrom:
+                secretKeyRef:
+                  key: pas
+                  name: luna
+
+          volumeMounts:
+            - mountPath: /var/run/docker.sock
+              name: docker-sock
+
+      volumes:
+        - name: docker-sock
+          hostPath:
+            path: /var/run/docker.sock

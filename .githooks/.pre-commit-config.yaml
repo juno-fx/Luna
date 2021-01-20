@@ -1,0 +1,40 @@
+repos:
+  - repo: https://github.com/asottile/reorder_python_imports
+    rev: v2.3.6
+    hooks:
+      - id: reorder-python-imports
+        name: Reorder Python imports (src, tests)
+        files: "^(?!examples/)"
+        args: ["--application-directories", "src/buggy"]
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.3.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+
+  - repo: local
+    hooks:
+      - id: clean
+        name: Clean
+        entry: make
+        language: system
+        types: [ python ]
+        args:
+          - clean-docker
+
+      - id: rebuild
+        name: Rebuild
+        entry: make
+        language: system
+        types: [ python ]
+        args:
+          - build
+
+      - id: pylint
+        name: Linting
+        entry: make
+        language: system
+        types: [ python ]
+        args:
+          - lint

@@ -1,0 +1,35 @@
+version: '3.7'
+
+
+services:
+  luna:
+    tty: true
+    hostname: luna
+    image: hatfieldfx/luna:local
+    environment:
+      BUDDY: fin
+    env_file:
+      - .env
+    build:
+      context: .
+      target: dev
+      dockerfile: Dockerfile
+    ports:
+      - 3030:3030
+    volumes:
+      - ./docs:/app/docs
+      - ./tests:/app/tests
+      - ./src/buggy:/app/buggy
+      - ./Makefile:/app/Makefile
+      - ./htmlcov:/app/htmlcov
+      - ./README.md:/app/README.md
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  workstation:
+    tty: true
+    image: hatfieldfx/workstation:nuke
+    ports:
+      - 5900:5900
+      - 5800:80
+    environment:
+      LUNA: fin

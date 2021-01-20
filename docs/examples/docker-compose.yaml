@@ -1,0 +1,17 @@
+version: '3.7'
+
+services:
+  luna:
+    image: hatfieldfx/luna
+    environment:
+      BUDDY: luna-buddy      # matches the hostname of the buddy container
+      USR: username
+      PAS: password
+      REG: your/repository
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # mount the docker socket on the host
+
+  workstation:
+    image: nginx
+    environment:
+      LUNA: luna-buddy
