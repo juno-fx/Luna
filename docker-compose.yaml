@@ -4,8 +4,7 @@ version: '3.7'
 services:
   luna:
     tty: true
-    hostname: luna
-    image: hatfieldfx/luna:local
+    image: junofx/luna:local
     environment:
       BUDDY: fin
     env_file:
