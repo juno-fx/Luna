@@ -63,15 +63,12 @@ async def snapshot(image: Image):
 
     # snapshot and push
     api = docker.APIClient()
-    registry = os.environ.get('REG')
-    if not registry:
-        registry = "https://index.docker.io/v1"
 
     # daemon calls
     api.login(
         username=os.environ['USR'],
         password=os.environ['PAS'],
-        registry=registry
+        registry=os.environ.get('REG', default=None)
     )
 
     api.commit(

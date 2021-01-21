@@ -21,7 +21,7 @@ COPY src/luna ./luna
 VOLUME /var/run/docker.sock
 
 # cmd set up
-CMD ["python3", "-u", "-m", "buggy"]
+CMD ["python3", "-u", "-m", "luna"]
 
 # production build
 FROM python:3.8-alpine as prod

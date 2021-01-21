@@ -4,7 +4,7 @@ version: '3.7'
 services:
   luna:
     tty: true
-    image: junofx/luna:local
+    image: junofx/luna:0.1.0
     environment:
       BUDDY: fin
     env_file:
@@ -18,17 +18,14 @@ services:
     volumes:
       - ./docs:/app/docs
       - ./tests:/app/tests
-      - ./src/buggy:/app/buggy
+      - ./src/luna:/app/luna
       - ./Makefile:/app/Makefile
       - ./htmlcov:/app/htmlcov
       - ./README.md:/app/README.md
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock:ro
 
   workstation:
     tty: true
-    image: hatfieldfx/workstation:nuke
-    ports:
-      - 5900:5900
-      - 5800:80
+    image: nginx
     environment:
       LUNA: fin
