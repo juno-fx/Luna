@@ -7,8 +7,6 @@ services:
     image: junofx/luna:0.1.0
     environment:
       BUDDY: fin
-    env_file:
-      - .env
     build:
       context: .
       target: dev

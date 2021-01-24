@@ -2,8 +2,8 @@
 Server init module
 """
 # std imports
-from pprint import pprint
 import os
+from logging import basicConfig, DEBUG
 from typing import Optional
 
 import docker
@@ -13,14 +13,27 @@ from pydantic import BaseModel
 from .server import APP
 
 
+basicConfig(level=DEBUG)
+
+
 # data model
 class Image(BaseModel):
     """
     Image model
     """
+    # credentials
+    user: str
+    password: str
+    registry: Optional[str] = None
+
+    # image repo
     tag: str
     repository: str
+
+    # image details
     message: str
+
+    # build but don't push
     dry: Optional[bool] = False
 
 
@@ -64,15 +77,11 @@ async def snapshot(image: Image):
     # snapshot and push
     api = docker.APIClient()
 
-    registry = os.environ.get('REG')
-    if not registry:
-        registry = "https://index.docker.io"
-
     # daemon calls
     api.login(
-        username=os.environ['USR'],
-        password=os.environ['PAS'],
-        registry=registry
+        username=image.user,
+        password=image.password,
+        registry=image.registry
     )
 
     api.commit(
